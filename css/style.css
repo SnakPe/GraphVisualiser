@@ -1,0 +1,210 @@
+/*
+GENERAL TAGS
+*/
+:root {
+	--background-color: white;
+	--text-color: black;
+	--border-color : black;
+	--gradient-color : #42e0f5;
+	--command-color: rgb(100, 149, 237);
+	--explanation-color: palegreen;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1e1f23;
+    --text-color: white;
+		--border-color: white; 	
+		--gradient-color : #5d42f5;
+		--command-color: rgb(67, 111, 192);;
+		--explanation-color: rgb(27, 221, 27);
+  }
+}
+
+body{
+	font-family: sans-serif,"Verdana", "Roboto", "Arial" ;
+	-webkit-user-select: none;
+	user-select: none; 
+	background-color: var(--background-color);
+	color: var(--text-color);
+	margin: 0;
+}
+
+button{
+	color: var(--text-color);
+	background: transparent;
+	border: 1px solid black;
+	margin: 2px;
+}
+button:hover{
+	background-image: linear-gradient(to bottom, var(--gradient-color),rgba(0,0,0,0));
+}
+/*SVG Text*/
+text{
+	dominant-baseline: middle;
+	text-anchor: middle;
+	fill: var(--border-color);
+	stroke: var(--border-color);
+}
+
+/*
+MODE SELECTION AREA
+*/
+#ModeSelection{
+	background-image: linear-gradient(to bottom, var(--gradient-color),rgba(0,0,0,0));
+	display: block;
+	padding: 8px;
+}
+
+@keyframes buttonExpansion{
+	from	{min-width: 0%;max-width: 0%;}
+	to		{min-width: 0%;max-width: 100%;}
+}
+.AlgorithmButton{
+	animation: buttonExpansion 20s ease-out forwards;
+	overflow: hidden;
+}
+
+/*
+CANVAS AREA
+*/
+#MainWrapper{
+	display: flex;
+	justify-content: center;
+	height: 90%;
+	touch-action: none;
+}
+#MainWrapper > *{
+	resize: horizontal;
+	overflow:hidden;
+}
+
+#MainCanvas{
+	resize: horizontal;
+	overflow: auto;
+	border: 1px solid var(--border-color);
+	width: 70vw;
+	height: 90vh;
+}
+
+/*nodes*/
+@keyframes alertNode {
+	from {
+		stroke: rgba(255, 0, 0, 1);
+		stroke-width: 5px;
+	}
+	to {
+		stroke: var(--border-color);
+		/* stroke-width: 1px; */
+	}
+}
+.AlertedNode{
+	animation-name: alertNode;
+	animation-duration: 500ms;
+}
+.GraphNode{
+	fill: var(--background-color);
+	stroke: var(--border-color);
+	stroke-width: 1px;
+}
+.GraphNode.Marked{
+	fill: var(--gradient-color);
+	transition: fill 1s;
+}
+.GraphNode:hover{
+	fill: lightgray;
+	transition: fill 0.1s ease-out;
+}
+
+/*edges*/
+@keyframes alertEdge {
+	from {
+		stroke: rgba(255, 0, 0, 1);
+		stroke-width: 10px;
+	}
+	to {
+		stroke: var(--border-color);
+	}
+}
+.AlertedNode{
+	animation-name: alertNode;
+	animation-duration: 500ms;
+}
+.GraphEdge{
+	fill: none;
+}
+.GraphEdge > .OuterLine{
+	stroke-width: 5px;
+	stroke: var(--border-color);
+}
+.GraphEdge.AlertedEdge > .OuterLine{
+	animation-name: alertEdge;
+	animation-duration: 500ms;	
+}
+.GraphEdge > .InnerLine{
+	stroke-width: 3px;
+	stroke: var(--background-color);
+}
+.GraphEdge.Marked > .InnerLine{
+	stroke: var(--gradient-color);
+	transition: stroke 1s;
+}
+.GraphEdge:hover > .InnerLine{
+	stroke: lightgray;
+	transition: stroke 0.1s ease-out;
+}
+.GraphEdge .Text > input{
+	outline: 0;
+	background: transparent;
+	border: none;
+	color: var(--text-color);
+}
+
+/*
+EXPLANATION AREA
+*/
+#MainExplanations{
+	margin-left: 10px;
+	height: 90vh;
+	width: 20vw;
+	overflow: hidden;
+}
+#ExplanationBox{
+	height: 90%;
+	border: 1px solid blue;
+	text-align: center;
+	overflow-y: scroll;
+}
+
+/* Step is either a Command or an Explanation*/
+.Step{
+	margin: 2px;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	color: black;
+	padding: 2px 0px ;
+}
+.Explanation{
+	background-color: var(--explanation-color);
+}
+.Command{
+	background-color: var(--command-color);
+}
+
+.Representation{
+	display: inline-block;
+	padding: 2px 0px;
+	border : 1px solid black;
+	border-bottom: 1px dashed black; 
+	background-color: white;
+}
+#ExplanationButtonsWrapper{
+	height: 10%;
+	overflow-y:overlay;
+	width: inherit;
+}
+#ExplanationButtons{
+	padding-top: 10px;
+}
+#ExplanationButtons.NoAlgorithm{
+	opacity: 50%;
+}

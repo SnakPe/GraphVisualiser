@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Graph Visualisation</title>
+		<script src="./build/Graphs/Node.js" type="module"></script>
+		<script src="./build/Graphs/Edge.js" type="module"></script>
+		<script src="./build/Graphs/Graph.js" type="module"></script>
+		<script src="./build/Algorithms/algorithms.js" type="module"></script>
+		<script src="./build/Algorithms/commands.js" type="module"></script>
+		<script src="./build/Algorithms/graphRepresentation.js" type="module"></script>
+		<script src="./build/script.js" type="module"></script>
+		<link rel="stylesheet" type="text/css" href="./css/style.css">
+	</head>
+	<body>
+		<span id="ModeSelection">
+			<button id="AddButton">
+				Add
+			</button>
+			<button id="ConnectButton">Connect</button>
+			<button id="WeightButton">Weight</button>
+			Mode: <span id="ModeDisplayer"></span>
+			<button id="AlgorithmButton">Algorithms</button>
+			<span id="AlgorithmSelection"></span>
+		</span>
+
+		<div id="MainWrapper">
+			<svg id="MainCanvas" xmlns:xhtml="http://www.w3.org/1999/xhtml"></svg>
+			<div id="MainExplanations">
+				<div id="ExplanationBox">	
+					<h1 style="overflow: hidden;">Explanations</h1><br>
+					<div id="ExplanationList"></div>
+				</div>
+				<div id="ExplanationButtonsWrapper">
+					<div id="ExplanationButtons" class="NoAlgorithm">
+						<button id="ExplanationDoButton">Do Step</button>
+						<button id="ExplanationUndoButton">Undo Step</button>
+						<button id="ExplanationAutoDoButton">AutoDo Steps</button>
+						<button id="ExplanationStopButton">Stop AutoDo</button>
+						<button id="ExplanationClearButton">Clear</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
