@@ -8,10 +8,6 @@ function handleRepresentationOnClick(graphElement) {
         currentAlertedElement.svg.classList.remove(currentAlertClass);
     }
     currentAlertedElement = graphElement;
-    if (graphElement instanceof Node)
-        new Audio("./src/Algorithms/STREAMING-wrong-answer-fail-buzzer-jam-fx-1-00-00.mp3").play();
-    else
-        new Audio("./src/Algorithms/in-die-futterlucke.mp3").play();
     const classes = graphElement.svg.classList;
     //We want the Alerted class to appear before Marked, so that the Alerted animation is prefered
     //The timeout guarentees that if the same element is alerted multiple times, it still shows the animation
