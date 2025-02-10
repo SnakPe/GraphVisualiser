@@ -1,27 +1,29 @@
-import { Graph, Modes } from "./Graphs/Graph.js";
-import { steps } from "./Algorithms/commands.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Graph_js_1 = require("./Graphs/Graph.js");
+const commands_js_1 = require("./Algorithms/commands.js");
 let currentGraph;
 onload = function () {
-    currentGraph = new Graph();
+    currentGraph = new Graph_js_1.Graph();
     //@ts-ignore
     globalThis.currentGraph = currentGraph;
     const explControls = this.document.getElementById("ExplanationButtons");
     document.getElementById("ModeDisplayer").innerHTML = currentGraph.mode;
     document.getElementById("AddButton").addEventListener("click", () => {
-        currentGraph.mode = Modes.Add;
+        currentGraph.mode = Graph_js_1.Modes.Add;
         document.getElementById("ModeDisplayer").innerHTML = currentGraph.mode;
     });
     document.getElementById("ConnectButton").addEventListener("click", () => {
-        currentGraph.mode = Modes.Connect;
+        currentGraph.mode = Graph_js_1.Modes.Connect;
         document.getElementById("ModeDisplayer").innerHTML = currentGraph.mode;
     });
     document.getElementById("WeightButton").addEventListener("click", () => {
-        currentGraph.mode = Modes.Weight;
+        currentGraph.mode = Graph_js_1.Modes.Weight;
         document.getElementById("ModeDisplayer").innerHTML = currentGraph.mode;
     });
     document.getElementById("AlgorithmButton").addEventListener("click", () => {
         let selection = this.document.getElementById("AlgorithmSelection");
-        let algos = [Modes.DFS, Modes.BFS, Modes.Kruskal, Modes.Prim];
+        let algos = [Graph_js_1.Modes.DFS, Graph_js_1.Modes.BFS, Graph_js_1.Modes.Kruskal, Graph_js_1.Modes.Prim];
         if (selection.hasChildNodes())
             selection.innerHTML = "";
         else
@@ -37,16 +39,16 @@ onload = function () {
             });
     });
     this.document.getElementById("ExplanationDoButton").addEventListener("click", () => {
-        steps.doNextStep();
+        commands_js_1.steps.doNextStep();
     });
     this.document.getElementById("ExplanationUndoButton").addEventListener("click", () => {
-        steps.undo();
+        commands_js_1.steps.undo();
     });
     let id = undefined;
     this.document.getElementById("ExplanationAutoDoButton").addEventListener("click", () => {
         if (id != undefined)
             return;
-        id = this.setInterval(steps.doNextStep, 1000);
+        id = this.setInterval(commands_js_1.steps.doNextStep, 1000);
     });
     this.document.getElementById("ExplanationStopButton").addEventListener("click", () => {
         const stopAutoButton = this.document.getElementById("ExplanationStopButton");
@@ -56,7 +58,7 @@ onload = function () {
         id = undefined;
     });
     this.document.getElementById("ExplanationClearButton").addEventListener("click", () => {
-        steps.clear();
+        commands_js_1.steps.clear();
         explControls.classList.add("NoAlgorithm");
     });
 };

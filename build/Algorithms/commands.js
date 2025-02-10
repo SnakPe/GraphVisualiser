@@ -1,4 +1,9 @@
-import { nodeRepresentation, edgeRepresentation, createExplanation } from "./graphRepresentation.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.steps = exports.GeneralCommand = void 0;
+exports.markNode = markNode;
+exports.useEdge = useEdge;
+const graphRepresentation_js_1 = require("./graphRepresentation.js");
 class Command {
     explanation;
     state;
@@ -21,7 +26,7 @@ class Command {
  * preferably used for single commands that dont repeat in their functionality
  * alternativly, one can create factories or something similar with this
  */
-export class GeneralCommand extends Command {
+class GeneralCommand extends Command {
     execute;
     undo;
     constructor(execute, undo, explanation, subcommands) {
@@ -32,6 +37,7 @@ export class GeneralCommand extends Command {
         this.explanation = explanation;
     }
 }
+exports.GeneralCommand = GeneralCommand;
 /**
  * @ignore using this is way too complicated and unneccesary
  */
@@ -92,33 +98,33 @@ class IfCommand extends Command {
 /**
  * This object saves the execution of a graph algorithm, and executes/ undoes one step at a time
  */
-export const steps = {
+exports.steps = {
     list: [],
     index: 0, //current command to be executed
     dom: document.getElementById("ExplanationList"),
     addStep(step) {
-        steps.list.push(step);
+        exports.steps.list.push(step);
     },
     undo() {
-        if (steps.index - 1 < 0)
+        if (exports.steps.index - 1 < 0)
             return;
-        const curStep = steps.list[steps.index - 1];
+        const curStep = exports.steps.list[exports.steps.index - 1];
         // if(curCommand instanceof IfCommand){
         // 	if(curCommand.canUndo())curCommand.undo()
         // 	else if (curCommand.subcommands)steps.index--
         // }
         if (curStep instanceof Command)
             curStep.undo();
-        steps.index--;
-        if (steps.dom.lastChild !== null)
-            steps.dom.removeChild(steps.dom.lastChild);
+        exports.steps.index--;
+        if (exports.steps.dom.lastChild !== null)
+            exports.steps.dom.removeChild(exports.steps.dom.lastChild);
     },
     doNextStep() {
-        if (steps.index >= steps.list.length)
+        if (exports.steps.index >= exports.steps.list.length)
             return;
-        const curStep = steps.list[steps.index];
+        const curStep = exports.steps.list[exports.steps.index];
         // if(!(curCommand instanceof IfCommand))
-        steps.index++;
+        exports.steps.index++;
         // else{
         // if(curCommand.canExecute())curCommand.execute()
         // else steps.index++
@@ -126,22 +132,22 @@ export const steps = {
         if (curStep instanceof Command)
             curStep.execute();
         const explDom = curStep instanceof Command ? curStep.getExplanation() : curStep;
-        steps.dom.appendChild(explDom);
+        exports.steps.dom.appendChild(explDom);
     },
     clear() {
-        while (steps.index > 0) {
-            steps.undo();
+        while (exports.steps.index > 0) {
+            exports.steps.undo();
         }
-        steps.list = [];
+        exports.steps.list = [];
     }
 };
 //@ts-ignore
-globalThis.steps = steps;
-export function markNode(node) {
+globalThis.steps = exports.steps;
+function markNode(node) {
     node.visit();
-    return new GeneralCommand(() => node.setMark(true), () => node.setMark(false), createExplanation(true, "Visit ", nodeRepresentation(node)));
+    return new GeneralCommand(() => node.setMark(true), () => node.setMark(false), (0, graphRepresentation_js_1.createExplanation)(true, "Visit ", (0, graphRepresentation_js_1.nodeRepresentation)(node)));
 }
-export function useEdge(edge) {
+function useEdge(edge) {
     edge.visit();
-    return new GeneralCommand(() => edge.setMark(true), () => edge.setMark(false), createExplanation(true, "Use ", edgeRepresentation(edge)));
+    return new GeneralCommand(() => edge.setMark(true), () => edge.setMark(false), (0, graphRepresentation_js_1.createExplanation)(true, "Use ", (0, graphRepresentation_js_1.edgeRepresentation)(edge)));
 }

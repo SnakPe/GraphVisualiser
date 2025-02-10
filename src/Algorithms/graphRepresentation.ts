@@ -14,6 +14,9 @@ function handleRepresentationOnClick(graphElement : Node|Edge){
   }
   currentAlertedElement = graphElement
 
+  document.getElementById("ApoJumpScare")!.hidden = false
+  setTimeout(() => document.getElementById("ApoJumpScare")!.hidden = true,500)
+
   const classes = graphElement.svg.classList
   //We want the Alerted class to appear before Marked, so that the Alerted animation is prefered
   //The timeout guarentees that if the same element is alerted multiple times, it still shows the animation

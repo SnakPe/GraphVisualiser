@@ -1,8 +1,44 @@
-import { Node } from "./Node.js";
-import { Edge } from "./Edge.js";
-import * as Algorithms from "../Algorithms/algorithms.js";
-import { steps } from "../Algorithms/commands.js";
-export var Modes;
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Graph = exports.Modes = void 0;
+const Node_js_1 = require("./Node.js");
+const Edge_js_1 = require("./Edge.js");
+const Algorithms = __importStar(require("../Algorithms/algorithms.js"));
+const commands_js_1 = require("../Algorithms/commands.js");
+var Modes;
 (function (Modes) {
     Modes["Add"] = "Add";
     Modes["Connect"] = "Connect";
@@ -11,8 +47,8 @@ export var Modes;
     Modes["BFS"] = "BFS";
     Modes["Kruskal"] = "Kruskal";
     Modes["Prim"] = "Prim";
-})(Modes || (Modes = {}));
-export class Graph {
+})(Modes || (exports.Modes = Modes = {}));
+class Graph {
     nodes;
     edges;
     lastClickedNode = null;
@@ -61,7 +97,7 @@ export class Graph {
             this.svg.setAttribute("viewBox", `${this.x} ${this.y} ${width} ${height}`);
     }
     createNode(x, y) {
-        const newNode = new Node(x + this.x, y + this.y, this.svg);
+        const newNode = new Node_js_1.Node(x + this.x, y + this.y, this.svg);
         newNode.svg.addEventListener("pointerup", (ev) => {
             const graph = this;
             if (!this.isDraggingNode)
@@ -97,7 +133,7 @@ export class Graph {
         return newNode;
     }
     createEdge(node1, node2) {
-        const newEdge = new Edge(node1, node2);
+        const newEdge = new Edge_js_1.Edge(node1, node2);
         newEdge.svg.addEventListener("click", (ev) => {
             switch (this.mode) {
                 case Modes.Weight:
@@ -138,7 +174,7 @@ export class Graph {
         this.edges.forEach(edge => { edge.setMark(false); edge.unvisit(); });
     }
     clearConnectedMarks(start) {
-        if (start instanceof Edge)
+        if (start instanceof Edge_js_1.Edge)
             start = start.nodes[0];
         let otherNodes = new Set([start]);
         for (let node of otherNodes) {
@@ -154,6 +190,7 @@ export class Graph {
         }
     }
 }
+exports.Graph = Graph;
 /**
  * Contains various functions to be executed when the user does something in the {@link Graph graph} area/canvas
  *
@@ -230,7 +267,7 @@ const nodeInteractionHandler = {
             graph.lastClickedNode = node;
     },
     executeAlgoritm(algorithm, graphClearingFunction) {
-        steps.clear();
+        commands_js_1.steps.clear();
         graphClearingFunction();
         document.getElementById("ExplanationButtons").classList.remove("NoAlgorithm");
         algorithm();

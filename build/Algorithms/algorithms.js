@@ -1,5 +1,11 @@
-import { steps, markNode, useEdge } from "./commands.js";
-import { createExplanation, edgeRepresentation, nodeRepresentation } from "./graphRepresentation.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dfs = dfs;
+exports.bfs = bfs;
+exports.kruskal = kruskal;
+exports.prim = prim;
+const commands_js_1 = require("./commands.js");
+const graphRepresentation_js_1 = require("./graphRepresentation.js");
 /**
  * From a node, get all other nodes and edges connected to {@link node}
  *
@@ -26,19 +32,19 @@ function getNodesAndEdges(node, onlyWeighted) {
  *
  * @param start
  */
-export function dfs(start) {
+function dfs(start) {
     let nodeStack = [start];
     let edgeStack = [];
     while (nodeStack.length > 0) {
         const currentNode = nodeStack[nodeStack.length - 1];
         if (!currentNode.wasVisited()) {
             if (edgeStack.length > 0)
-                steps.addStep(useEdge(edgeStack.pop()));
-            steps.addStep(markNode(currentNode));
+                commands_js_1.steps.addStep((0, commands_js_1.useEdge)(edgeStack.pop()));
+            commands_js_1.steps.addStep((0, commands_js_1.markNode)(currentNode));
         }
         //typescript types find() as not also returning undefined? 
         const nextNode = currentNode.getNeighbours().find(nbour => !nbour.wasVisited());
-        steps.addStep(createExplanation(false, "Check for a next unvisited neighbour of ", nodeRepresentation(currentNode), ": ", nextNode !== undefined ? nodeRepresentation(nextNode) : "there are none"));
+        commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Check for a next unvisited neighbour of ", (0, graphRepresentation_js_1.nodeRepresentation)(currentNode), ": ", nextNode !== undefined ? (0, graphRepresentation_js_1.nodeRepresentation)(nextNode) : "there are none"));
         if (nextNode) {
             nodeStack.push(nextNode);
             const nbour = currentNode.getEdgeConnectingTo(nextNode);
@@ -50,22 +56,22 @@ export function dfs(start) {
             edgeStack.pop();
         }
     }
-    steps.addStep(createExplanation(false, "Depth-first search is done"));
+    commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Depth-first search is done"));
 }
-export function bfs(start) {
+function bfs(start) {
     let currentLevel = [start];
-    steps.addStep(markNode(start));
+    commands_js_1.steps.addStep((0, commands_js_1.markNode)(start));
     let level = 1;
     while (currentLevel.length > 0) {
-        steps.addStep(createExplanation(false, "Get every node of level " + level + ":"));
+        commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Get every node of level " + level + ":"));
         let nextLevel = [];
         currentLevel.forEach(node => {
-            steps.addStep(createExplanation(false, `Find every unmarked neighbour of `, nodeRepresentation(node)));
+            commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, `Find every unmarked neighbour of `, (0, graphRepresentation_js_1.nodeRepresentation)(node)));
             node.edges.forEach(edge => {
                 const nbour = edge.getNeighbourOf(node);
                 if (!nbour.wasVisited()) {
-                    steps.addStep(useEdge(edge));
-                    steps.addStep(markNode(nbour));
+                    commands_js_1.steps.addStep((0, commands_js_1.useEdge)(edge));
+                    commands_js_1.steps.addStep((0, commands_js_1.markNode)(nbour));
                     nextLevel.push(nbour);
                 }
             });
@@ -73,7 +79,7 @@ export function bfs(start) {
         currentLevel = nextLevel;
         level++;
     }
-    steps.addStep(createExplanation(false, "Breath first search is done"));
+    commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Breath first search is done"));
 }
 /**
  * only uses weighed nodes. Since the graph can be disjointed, this modification of the kruskal-algorithm
@@ -82,7 +88,7 @@ export function bfs(start) {
  * @todo remake this. the cycle check using usedEdges and usedNodes is horribe
  * @param edges
  */
-export function kruskal(node) {
+function kruskal(node) {
     let { edges, possibleNodes } = getNodesAndEdges(node, true);
     edges = edges.filter(edge => edge.weight !== null).sort((edge1, edge2) => edge2.weight - edge1.weight);
     let usedNodes = [];
@@ -90,13 +96,13 @@ export function kruskal(node) {
     let smallestEdge;
     while (edges.length > 0) {
         smallestEdge = edges[edges.length - 1];
-        steps.addStep(createExplanation(false, "Find next unused edge with smallest weight: ", edgeRepresentation(smallestEdge)));
+        commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Find next unused edge with smallest weight: ", (0, graphRepresentation_js_1.edgeRepresentation)(smallestEdge)));
         let hasCycles = hasCyclesDFS(smallestEdge.nodes[0]);
-        steps.addStep(createExplanation(false, "Check if ", edgeRepresentation(smallestEdge), ` creates a cycle: ${hasCycles}`));
+        commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Check if ", (0, graphRepresentation_js_1.edgeRepresentation)(smallestEdge), ` creates a cycle: ${hasCycles}`));
         usedNodes = [];
         usedEdges = [];
         if (!hasCycles) {
-            steps.addStep(useEdge(smallestEdge));
+            commands_js_1.steps.addStep((0, commands_js_1.useEdge)(smallestEdge));
         }
         smallestEdge = edges.pop();
     }
@@ -114,9 +120,9 @@ export function kruskal(node) {
         }
         return false;
     }
-    steps.addStep(createExplanation(false, "Kruskal's algorithm is done"));
+    commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Kruskal's algorithm is done"));
 }
-export function prim(node) {
+function prim(node) {
     function isPossible(edge) {
         return !edge.wasVisited() && edge.hasWeight() && edge.nodes.some(n => !n.wasVisited());
     }
@@ -126,16 +132,16 @@ export function prim(node) {
     }
     let possibleEdges = findPossibleEdges(node).sort((e1, e2) => e2.weight - e1.weight);
     if (possibleEdges.length !== 0)
-        steps.addStep(markNode(node));
+        commands_js_1.steps.addStep((0, commands_js_1.markNode)(node));
     while (possibleEdges.length > 0) {
         const currentEdge = possibleEdges.pop();
         if (!isPossible(currentEdge))
             continue;
-        steps.addStep(createExplanation(false, "Find unused edge with smallest weight coming from a visited node: ", edgeRepresentation(currentEdge)));
+        commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Find unused edge with smallest weight coming from a visited node: ", (0, graphRepresentation_js_1.edgeRepresentation)(currentEdge)));
         const nextNode = currentEdge.nodes.find(node => !node.wasVisited());
-        steps.addStep(useEdge(currentEdge));
-        steps.addStep(markNode(nextNode));
+        commands_js_1.steps.addStep((0, commands_js_1.useEdge)(currentEdge));
+        commands_js_1.steps.addStep((0, commands_js_1.markNode)(nextNode));
         possibleEdges = possibleEdges.concat(findPossibleEdges(nextNode)).sort((e1, e2) => e2.weight - e1.weight);
     }
-    steps.addStep(createExplanation(false, "Prim's Algorithm is Done"));
+    commands_js_1.steps.addStep((0, graphRepresentation_js_1.createExplanation)(false, "Prim's Algorithm is Done"));
 }
