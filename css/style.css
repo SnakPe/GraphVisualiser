@@ -1,3 +1,13 @@
+/*JUMP SCARE*/
+#ApoJumpScare{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1;
+	top: 0px;
+	left: 0px;
+}
+
 /*
 GENERAL TAGS
 */
