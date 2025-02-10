@@ -1,4 +1,7 @@
-export class Node {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Node = void 0;
+class Node {
     x;
     y;
     radius = "20";
@@ -70,3 +73,4 @@ export class Node {
         return this.edges.find(edge => edge.getNeighbourOf(this) === nbour);
     }
 }
+exports.Node = Node;

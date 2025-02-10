@@ -1,4 +1,7 @@
-export class Edge {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Edge = void 0;
+class Edge {
     nodes;
     weight = null;
     marked = false;
@@ -185,3 +188,4 @@ export class Edge {
         return this.weight != null && !isNaN(this.weight);
     }
 }
+exports.Edge = Edge;
